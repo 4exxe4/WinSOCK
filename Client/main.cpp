@@ -1,3 +1,7 @@
+//WinSOCK (Windows Sockets).
+//BSDsockets FreeBSD.
+
+#define _CRT_SECURE_NO_WARNINGS
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif // !WIN32_LEAN_AND_MEAN
@@ -7,13 +11,30 @@
 #include<WinSock2.h>
 #include<WS2tcpip.h>
 #include<iphlpapi.h>
-
 using namespace std;
 
 #pragma comment(lib, "WS2_32.lib")
 
 #define PORT "27015"
 #define BUFFER_LENGTH	1500
+
+LPSTR FormatLastError(DWORD dwError, CHAR szBuffer[])
+{
+	LPSTR lpBuffer = NULL;
+	FormatMessage
+	(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		dwError,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPSTR)&lpBuffer,
+		0,
+		NULL
+	);
+	sprintf(szBuffer, "Error %i: %s", dwError, lpBuffer);
+	LocalFree(lpBuffer);
+	return szBuffer;
+}
 
 void main()
 {
@@ -60,6 +81,11 @@ void main()
 	if (iResult == SOCKET_ERROR)
 	{
 		cout << "Unable to connect to Server" << endl;
+		DWORD dwError = WSAGetLastError();
+		CHAR szError[256] = {};
+		cout << "Unable to connect to Server." << endl;
+		cout << FormatLastError(dwError, szError) << endl;
+
 		closesocket(connect_socket);
 		freeaddrinfo(result);
 		WSACleanup();
@@ -98,4 +124,3 @@ void main()
 		WSACleanup();
 		return;
 	}
-}

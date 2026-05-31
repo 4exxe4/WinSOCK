@@ -2,6 +2,8 @@
 #define WIN32_LEAN_AND_MEAN
 #endif // !define WIN32_LEAN_AND_MEAN
 
+//Server
+
 #include<iostream>
 #include<Windows.h>
 #include<winsock2.h>
