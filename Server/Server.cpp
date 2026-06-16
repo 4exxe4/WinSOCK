@@ -1,4 +1,4 @@
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
+п»ї#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif // !define WIN32_LEAN_AND_MEAN
@@ -24,7 +24,7 @@ using namespace std;
 SOCKET sockets[MAX_CONNECTIONS] = {};
 DWORD dwThreadIDs[MAX_CONNECTIONS] = {};
 HANDLE hThreads[MAX_CONNECTIONS] = {};
-INT g_ActiveClients = 0;	//счетчик клиентов
+INT g_ActiveClients = 0;	//СЃС‡РµС‚С‡РёРє РєР»РёРµРЅС‚РѕРІ
 
 struct ClientParameters
 {
@@ -57,7 +57,7 @@ void main()
 		return;
 	}
 
-	//2) Параметры подключения:
+	//2) РџР°СЂР°РјРµС‚СЂС‹ РїРѕРґРєР»СЋС‡РµРЅРёСЏ:
 	addrinfo hints;
 	addrinfo* result;
 	ZeroMemory(&hints, sizeof(hints));
@@ -76,7 +76,7 @@ void main()
 		return;
 	}
 
-	//3) Создаем сокет для сервера, который он будет постоянно слушать "LISTENING":
+	//3) РЎРѕР·РґР°РµРј СЃРѕРєРµС‚ РґР»СЏ СЃРµСЂРІРµСЂР°, РєРѕС‚РѕСЂС‹Р№ РѕРЅ Р±СѓРґРµС‚ РїРѕСЃС‚РѕСЏРЅРЅРѕ СЃР»СѓС€Р°С‚СЊ "LISTENING":
 	SOCKET listen_socket =
 		socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 	dwError = WSAGetLastError();
@@ -103,7 +103,7 @@ void main()
 	}
 	freeaddrinfo(result);
 
-	//5) Запускаем прослушивание сокета:
+	//5) Р—Р°РїСѓСЃРєР°РµРј РїСЂРѕСЃР»СѓС€РёРІР°РЅРёРµ СЃРѕРєРµС‚Р°:
 	if (listen(listen_socket, MAX_CONNECTIONS) == SOCKET_ERROR)
 	{
 		dwError = WSAGetLastError();
@@ -115,7 +115,7 @@ void main()
 		return;
 	}
 
-	//6) Обработка соединений от клиентов:
+	//6) РћР±СЂР°Р±РѕС‚РєР° СЃРѕРµРґРёРЅРµРЅРёР№ РѕС‚ РєР»РёРµРЅС‚РѕРІ:
 
 	do
 	{
@@ -130,7 +130,7 @@ void main()
 			cout << FormatLastError(dwError, szError) << endl;
 			cout << "Accept failed with error: " << WSAGetLastError() << endl;
 		}
-		//6.1) Получаем информацию о сокете клиента:
+		//6.1) РџРѕР»СѓС‡Р°РµРј РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ СЃРѕРєРµС‚Рµ РєР»РёРµРЅС‚Р°:
 		//sockaddr_in client_address_in = (sockaddr_in)client_address;
 		cout << inet_ntoa(client_address.sin_addr) << ":" << ntohs(client_address.sin_port) << endl;;
 
@@ -143,7 +143,7 @@ void main()
 			(
 				NULL,	//Security attributes
 				0,		//Stack size
-				(LPTHREAD_START_ROUTINE)ClientHandle,	//Указатель на функцию, которая будет выполняться в потоке
+				(LPTHREAD_START_ROUTINE)ClientHandle,	//РЈРєР°Р·Р°С‚РµР»СЊ РЅР° С„СѓРЅРєС†РёСЋ, РєРѕС‚РѕСЂР°СЏ Р±СѓРґРµС‚ РІС‹РїРѕР»РЅСЏС‚СЊСЃСЏ РІ РїРѕС‚РѕРєРµ
 				(LPVOID)sockets[g_ActiveClients],
 				0,
 				&dwThreadIDs[g_ActiveClients]
@@ -214,7 +214,7 @@ VOID ClientHandle(SOCKET client_socket)
 	INT iResult = 0;
 	DWORD dwError = 0;
 	CHAR szError[256] = {};
-	//7) Получение и отправка данных:
+	//7) РџРѕР»СѓС‡РµРЅРёРµ Рё РѕС‚РїСЂР°РІРєР° РґР°РЅРЅС‹С…:
 	INT iSendResult = 0;
 	do
 	{
@@ -287,7 +287,7 @@ VOID ShowActiveClients()
 	GetConsoleScreenBufferInfo(hConsole, &info);
 	COORD cursor = { 25, 1 };
 	SetConsoleCursorPosition(hConsole, cursor);
-	cout << "Количество подключений: " << g_ActiveClients;
+	cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕРґРєР»СЋС‡РµРЅРёР№: " << g_ActiveClients;
 	SetConsoleCursorPosition(hConsole, info.dwCursorPosition);
 }
 VOID Broadcast(CHAR sz_message[], DWORD dwID)

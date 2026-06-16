@@ -1,4 +1,4 @@
-#include"FormatLastError.h"
+﻿#include"FormatLastError.h"
 
 LPSTR FormatLastError(DWORD dwError, CHAR szBuffer[])
 {
